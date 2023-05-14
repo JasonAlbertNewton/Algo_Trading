@@ -11,13 +11,14 @@ class average_moving_cross:
 	#this function is to calcualte the date range of the data
 	def gt_range_data(self):
 		sizes = self.data.shape[0]
-		print(sizes)
+		Date = self.data.index
 		temp = self.data
 		start = 0
 
 		_init_data_moving_average = {
 			'AVG_1':[],	
 			'AVG_2':[],
+			'Date' :Date
 		}
 		for i in range(self.mov_1):
 			_init_data_moving_average['AVG_1'].append(0)
@@ -39,10 +40,16 @@ class average_moving_cross:
 			start = start+1		
 		
 		data_moving_average=pd.DataFrame(_init_data_moving_average)	
-		print(data_moving_average.tail())
+		data_moving_average=data_moving_average.set_index('Date')
+		
+		return data_moving_average
+		 		
 
 	def save_file(self):
-		pass
+		temp = self.gt_range_data()
+		temp.to_csv('save.csv', index = True)
+
+
 	def avg_mov_cro(self):
 		Close_level = data['Close']
 	
