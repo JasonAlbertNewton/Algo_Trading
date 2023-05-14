@@ -6,21 +6,25 @@ import os
 from avg_mov_cro import average_moving_cross
 
 os.system('clear')
-
 while (1):
 #import data
 	stock_check = input("INPUT THE STOCK YOU WANT TO CHECK: [-1 to quit] ")
 	
 	if(stock_check == "-1"):
-		break
+		exit(0)
 	
 	start_date  = input("The begining of the data you want: [YYYY-MM-DD] ")
 	end_date = input("The end of the date you want: [YYYY-MM-DD] ")
 
 	data = yf.download(stock_check,start=start_date , end=end_date)
 	while(1):
-		user_input = int(input("\nINPUT OPTION: \n 1. Read data \n 2. Specific Column \n"))
-		
+		try:
+			user_input = int(input("\nINPUT OPTION: \n 1. Read data \n 2. Specific Column \n 3. moving average \n OPTION: \n"))
+		except:
+			break
+
+		available_choice = [1,2,3]		
+
 		if(user_input == 1):
 			print(data.tail())
 		if(user_input == 2):
@@ -31,13 +35,22 @@ while (1):
 					break
 				else:
 					arr.append(user_specific_column)
-			temp = data[arr]
-			print(temp)
+			try:
+				temp = data[arr]
+				print(temp)
+			except:
+				print("INPUT FAIL ! RETURN TO MAIN PAGE .......... ")
+				break
 		if(user_input == 3):
-			avg_mov_cro= average_moving_cross(data , 10 , 20)			
+			mov_1 = int(input("\n INPUT SMALLER MOVING AVEGERE ONE \n"))
+			mov_2 = int(input("\n INPUT LARGER MOVING AVERAGE TWO \n"))
+			avg_mov_cro= average_moving_cross(data , mov_1 , mov_2)			
 			avg_mov_cro.gt_range_data()
 
 		
-		if(user_input == -1):
-			break
+		if(user_input not in available_choice):
+			break	
+		
+		
 
+	

@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+import csv 
 
 #this function return at that period of time of back testing,  
 class average_moving_cross:	
@@ -10,8 +10,39 @@ class average_moving_cross:
 		
 	#this function is to calcualte the date range of the data
 	def gt_range_data(self):
-		print(self.data.head(self.mov_1))	
+		sizes = self.data.shape[0]
+		print(sizes)
+		temp = self.data
+		start = 0
 
+		_init_data_moving_average = {
+			'AVG_1':[],	
+			'AVG_2':[],
+		}
+		for i in range(self.mov_1):
+			_init_data_moving_average['AVG_1'].append(0)
+	
+		for i in range(sizes - self.mov_1):
+			temp1 = temp.iloc[start:start+self.mov_1]
+			mov_avg_1 = temp1['Close'].sum()/self.mov_1
+			_init_data_moving_average['AVG_1'].append(mov_avg_1)
+			start = start+1
+		
+		for i in range(self.mov_2):		
+			_init_data_moving_average['AVG_2'].append(0)
+		
+		start = 0
+		for i in range(sizes-self.mov_2):
+			temp1 = temp.iloc[start:start+self.mov_2]
+			mov_avg_2 = temp1['Close'].sum()/self.mov_2
+			_init_data_moving_average['AVG_2'].append(mov_avg_2)
+			start = start+1		
+		
+		data_moving_average=pd.DataFrame(_init_data_moving_average)	
+		print(data_moving_average.tail())
+
+	def save_file(self):
+		pass
 	def avg_mov_cro(self):
 		Close_level = data['Close']
 	
