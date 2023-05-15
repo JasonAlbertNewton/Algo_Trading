@@ -4,6 +4,7 @@ import pandas as pd
 import os 
 
 from avg_mov_cro import average_moving_cross
+from RSI import RSI
 
 os.system('clear')
 
@@ -43,17 +44,34 @@ while (1):
 				print("INPUT FAIL ! RETURN TO MAIN PAGE .......... ")
 				break
 		if(user_input == 3):
-			mov_1 = int(input("\n INPUT SMALLER MOVING AVEGERE ONE \n"))
-			mov_2 = int(input("\n INPUT LARGER MOVING AVERAGE TWO \n"))
+			try:
+				mov_1 = int(input("\n INPUT SMALLER MOVING AVEGERE ONE \n"))
+			except:
+				print("INPUT ERROR: PLS INPUT AN INTERGER") 
+				continue
+			try: 
+				mov_2 = int(input("\n INPUT LARGER MOVING AVERAGE TWO \n"))
+			except: 
+				print("INPUT ERROR: PLS INPUT AN INTERGER") 
+				continue
 			avg_mov_cro= average_moving_cross(data , mov_1 , mov_2)			
 			avg_mov_cro.save_file()
 		
+		if(user_input == 4):
+			try:
+				rsi_1 = int(input("RSI TIME RANGE \n"))
+			except:
+				print("INPUT ERROR: PLS INPUT AN INTERGER") 
+				continue
+			
+			RSI = RSI(data , rsi_1)
+			print(RSI.RSI_calc())
+
+
+
 		if(user_input == -1):
 			exit(0)
 		
 		if(user_input not in available_choice):
 			break	
 		
-		
-
-	

@@ -4,7 +4,11 @@ import csv
 #this function return at that period of time of back testing,  
 class average_moving_cross:	
 	def __init__(self , data , mov_1 , mov_2):
-		self.data = data
+		self.data = data	
+		if(mov_1 > mov_2):
+			temp = mov_1 
+			mov_1 = mov_2
+			mov_2 = temp	
 		self.mov_1 = mov_1
 		self.mov_2 = mov_2
 		
@@ -44,20 +48,19 @@ class average_moving_cross:
 		
 		return data_moving_average
 		 		
+	def print_data(self):
+		temp = self.gt_range_data()
+		print(temp.head())
 
 	def save_file(self):
 		temp = self.gt_range_data()
 		temp.to_csv('save.csv', index = True)
 
 
-	def avg_mov_cro(self):
-		Close_level = data['Close']
-	
-		mov_1 = int(self.mov_1)
-		mov_2 = int(self.mov_2)
-
-		if(Close_level.size < self.mov_1 or Close_level.size < self.mov_2):
-			return []
+	def avg_mov_cro_test(self):
+		_avg_data = self.gt_range_data()
+#		for i in range(_avg_data.shape[0]):		
+		pass	
 
 
 
