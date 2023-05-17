@@ -10,7 +10,7 @@ class RSI:
 		self.time_slot_one = time_slot_one
 
 
-	#Return RSI_DATA: a panda dataframe
+	#Return RSI_DATA: a panda dataframe : WRONG CALCULATIOn
 	def RSI_calc(self):
 		sizes = self.data.shape[0]
 		data_close = self.data['Close']
@@ -25,6 +25,7 @@ class RSI:
 			"RSI_INDEX": [],
 			"AVG_GAIN": [],
 			"AVG_LOSE": [],
+			"Price": self.data['Close'],
 		}
 		#do a loop get the first time_slot_one_data Umean and Dmean
 		for i in range(1,sizes):
@@ -87,11 +88,29 @@ class RSI:
 		return RSI_DATA
 	
 
-	#Back TESTING win rate and basic return
-	def RSI_Backtesting(self): 
+	#Back TESTING win rate and basic return , assume 1000 dollars at first , reach low buy , reach high then sell , default seeting use close price 
+	def RSI_Backtesting(self , low , higg): 
+		RSI_Data = self.RSI_calc()
+		sizes = RSI_Data.shape[0]
+		#FOR LOOP --> loop through sizes time
+		for i in range(sizes):
+			pass 
+			#if RSI reach low then buy and change the status to 1 
+
+			#IF RSI reach low with status == 1 sell and cut loss
+
+			#IF RSI reach high with status == 1 sell it 
+
+			#Check config --> if allow short when RSI reach high and status == 0 , then short it and status == -1 
+
+			#every time change status record is a win , loss situation , participation data need to be count when status == 1 or -1 and don't count when it is 0
+		
+		#Backtest return result: Win Rate , Loss Rate , Return over the period , Highes amount , Lowest amount 
+
 		pass
 
 
+	#percentage change calculator
 	def RSI_percentage_change(self, dt1 , dt2):
 		return (dt2-dt1)/dt1*100
 

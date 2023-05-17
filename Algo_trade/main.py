@@ -27,7 +27,7 @@ if __name__ == "__main__":
 		data = yf.download(stock_check,start=start_date , end=end_date)
 		while(1):
 			try:
-				user_input = int(input("\nINPUT OPTION: \n 1. Read data \n 2. Specific Column \n 3. moving average \n OPTION: \n"))
+				user_input = int(input("\nINPUT OPTION: \n 1. Read data \n 2. Specific Column \n 3. moving average \n 4. RSI indicator \n OPTION: \n"))
 			except:
 				break
 
@@ -71,22 +71,17 @@ if __name__ == "__main__":
 					continue
 
 				RSI = RSI(data , rsi_1)
-				print(RSI.RSI_calc())
+				print(RSI.RSI_calc().tail(10))
 
 
 
 			if(user_input == -1):
 				exit(0)
 
-			if(user_input not in available_choice):
-				break
-
-
-
-
-
 
 #testing for web page
 def web_test():
 	data = yf.download("BABA",start="2020-1-1" , end="2021-1-1")
+	RSI = RSI(data , rsi_1)
+	print(RSI.RSI_calc())
 	return data
