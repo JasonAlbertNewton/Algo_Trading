@@ -9,6 +9,8 @@ class RSI:
 		self.data = data
 		self.time_slot_one = time_slot_one
 
+
+	#Return RSI_DATA: a panda dataframe
 	def RSI_calc(self):
 		sizes = self.data.shape[0]
 		data_close = self.data['Close']
@@ -20,7 +22,9 @@ class RSI:
 			"Umean": [0],
 			"Dmean": [0],
 			"Date" : self.data.index,
-	#		"RSI_INDEX": [],
+			"RSI_INDEX": [],
+			"AVG_GAIN": [],
+			"AVG_LOSE": [],
 		}
 		#do a loop get the first time_slot_one_data Umean and Dmean
 		for i in range(1,sizes):
@@ -29,30 +33,63 @@ class RSI:
 			percentage_change = self.RSI_percentage_change(dt1, dt2)
 
 			if(percentage_change > 0):
-				RSI_DATA["Umean"].append(dt2)
+				RSI_DATA["Umean"].append(percentage_change)
 				RSI_DATA["Dmean"].append(0)
 			else:
 				RSI_DATA["Umean"].append(0)
-				RSI_DATA["Dmean"].append(dt2)
+				RSI_DATA["Dmean"].append(percentage_change)
 
 		for i in range(self.time_slot_one):
 			RSI_DATA['RSI_INDEX'].append(0)
+			RSI_DATA['AVG_GAIN'].append(0)
+			RSI_DATA['AVG_LOSE'].append(0)
 
-        start = 0
+		start = 0
 
-        for i in range(self.time_slot_one, sizes):
-            pass
+		#calculating RSI index
+		for i in range(self.time_slot_one, sizes):
+			#reset loop 
+			Umean_temp=[]
+			RS_INDEX = 0
+			Dmean_temp=[]
+			number_of_Deman = 0
+			number_of_Umean = 0
 
+			#umean and deman caluclation 
+			for j in range(self.time_slot_one):
+				if(RSI_DATA["Umean"][j+start] != 0):
+					number_of_Umean += 1
+					Umean_temp.append(RSI_DATA["Umean"][j+start])
+					Dmean_temp.append(0)
+				else:
+					number_of_Deman += 1
+					Dmean_temp.append(RSI_DATA["Dmean"][j+start]*-1)
+					Umean_temp.append(0)
+			#average gain and lost calculation 
+			numpy_Umean_temp = np.array(Umean_temp)
+			numpy_Dmean_temp = np.array(Dmean_temp)
+			Avg_Gain = np.mean(numpy_Umean_temp)
+			Avg_Loss = np.mean(numpy_Dmean_temp)
 
+			#RSI Data Calcalution
+			RSI_DATA["AVG_GAIN"].append(Avg_Gain)
+			RSI_DATA["AVG_LOSE"].append(Avg_Loss)	
+			RS_INDEX = Avg_Gain/Avg_Loss
+			RSI_DATA["RSI_INDEX"].append(100 - 100/(1+RS_INDEX))
+
+			#loop counter
+			start += 1
+
+		#change the dataframe
 		RSI_DATA = pd.DataFrame(data=RSI_DATA)
 		RSI_DATA = RSI_DATA.set_index('Date')
 
-		print(RSI_DATA)
-		#do a loop
-			#seperate the data into the time slot
+		return RSI_DATA
+	
 
-			#caluclate Umean
-			#calcalute Dmean
+	#Back TESTING win rate and basic return
+	def RSI_Backtesting(self): 
+		pass
 
 
 	def RSI_percentage_change(self, dt1 , dt2):
@@ -75,3 +112,4 @@ if __name__ == "__main__":
 	except:
 		print("Fail: RSI change tiem slot fail .... .... ....")
 
+	
