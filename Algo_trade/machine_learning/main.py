@@ -1,8 +1,8 @@
-import torch 
-import torchvision
-import torch.nn as nn
-import numpy as np
-import torchvision.transforms as transforms
-
-
-x = torch.tensor(1, require
+import torch
+def fn(x, y):
+    a = torch.cos(x).cuda()
+    b = torch.sin(y).cuda()
+    return a + b
+new_fn = torch.compile(fn, backend="inductor")
+input_tensor = torch.randn(10000).to(device="cuda:0")
+a = new_fn(input_tensor, input_tensor)

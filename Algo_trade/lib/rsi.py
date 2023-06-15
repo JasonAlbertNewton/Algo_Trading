@@ -108,7 +108,23 @@ class RSI:
 		#Backtest return result: Win Rate , Loss Rate , Return over the period , Highes amount , Lowest amount 
 
 		pass
+	
+	def RSI_calculation_temp(self, adjust=False):
+		delta = self.data['Close'].diff(1).dropna()
+		window = self.time_slot_one 
+		loss = delta.copy()
+		gains = delta.copy()
 
+		gains[gains < 0] = 0
+		loss[loss > 0] = 0
+
+		gain_ewm = gains.ewm(com=window - 1, adjust=adjust).mean()
+		loss_ewm = abs(loss.ewm(com=window - 1, adjust=adjust).mean())
+
+		RS = gain_ewm / loss_ewm
+		RSI = 100 - 100 / (1 + RS)
+
+		return RSI
 
 	#percentage change calculator
 	def RSI_percentage_change(self, dt1 , dt2):
