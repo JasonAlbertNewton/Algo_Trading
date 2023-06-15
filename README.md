@@ -1,7 +1,7 @@
 # Algo_Trading
 
 Algorithm trading with Python
-This project include:
+This project includes:
   - Various trading Algorithm with python
   - Back Test System
   - Web page to show the result 
